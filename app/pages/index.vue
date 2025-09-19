@@ -17,6 +17,10 @@
       <div class="auth-buttons">
         <button class="btn-secondary">Log in</button>
         <button class="btn-primary">Sign up</button>
+        <button @click="toggleTheme" class="btn-secondary theme-switcher">
+          <span v-if="$colorMode.value === 'light'">🌙</span>
+          <span v-else>☀️</span>
+        </button>
       </div>
     </header>
 
@@ -77,12 +81,17 @@
 </template>
 
 <script setup lang="ts">
+const colorMode = useColorMode()
+
+function toggleTheme() {
+  colorMode.preference = colorMode.value === 'light' ? 'dark' : 'light'
+}
 </script>
 
 <style scoped>
 .landing-page {
   font-family: sans-serif;
-  color: #333;
+  color: var(--text-color);
 }
 
 .header {
@@ -90,7 +99,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .logo {
@@ -104,10 +113,14 @@
   margin-right: 0.5rem;
 }
 
+.logo svg path {
+  stroke: var(--text-color);
+}
+
 .nav a {
   margin: 0 1rem;
   text-decoration: none;
-  color: #555;
+  color: var(--text-color-secondary);
 }
 
 .auth-buttons .btn-primary,
@@ -120,13 +133,18 @@
 }
 
 .auth-buttons .btn-primary {
-  background-color: #007bff;
-  color: white;
+  background-color: var(--primary-color);
+  color: var(--primary-color-text);
 }
 
 .auth-buttons .btn-secondary {
-  background-color: #f0f0f0;
-  color: #333;
+  background-color: var(--secondary-color);
+  color: var(--secondary-color-text);
+}
+
+.theme-switcher {
+  font-size: 1.2rem;
+  line-height: 1;
 }
 
 .main-content {
@@ -148,15 +166,15 @@
 
 .hero-text p {
   font-size: 1.2rem;
-  color: #555;
+  color: var(--text-color-secondary);
   margin-bottom: 2rem;
 }
 
 .hero .btn-primary {
   padding: 1rem 2rem;
   font-size: 1.2rem;
-  background-color: #007bff;
-  color: white;
+  background-color: var(--primary-color);
+  color: var(--primary-color-text);
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -164,6 +182,14 @@
 
 .hero-image {
   margin-top: 2rem;
+}
+
+.hero-image svg rect:first-of-type {
+  fill: var(--hero-image-bg);
+}
+
+.hero-image svg rect:not(:first-of-type) {
+  fill: var(--hero-image-rect-bg);
 }
 
 .features {
@@ -178,7 +204,7 @@
 
 .features > p {
   font-size: 1.2rem;
-  color: #555;
+  color: var(--text-color-secondary);
   margin-bottom: 3rem;
 }
 
@@ -189,7 +215,7 @@
 }
 
 .feature-card {
-  border: 1px solid #eee;
+  border: 1px solid var(--border-color);
   padding: 2rem;
   border-radius: 10px;
   text-align: left;
@@ -208,8 +234,8 @@
 .footer {
   text-align: center;
   padding: 2rem;
-  border-top: 1px solid #eee;
-  color: #777;
+  border-top: 1px solid var(--border-color);
+  color: var(--footer-text-color);
 }
 
 .footer-links {
@@ -219,6 +245,6 @@
 .footer-links a {
   margin: 0 1rem;
   text-decoration: none;
-  color: #777;
+  color: var(--footer-text-color);
 }
 </style>
