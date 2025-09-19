@@ -1,0 +1,30 @@
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - '-t'
+      - 'europe-west2-docker.pkg.dev/cosmic-carving-454310-j6/tst-app/tst-app'
+      - .
+
+
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - 'europe-west2-docker.pkg.dev/cosmic-carving-454310-j6/tst-app/tst-app'
+
+
+  # Deploy to Cloud Run
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        revision_suffix=$(date +%s)
+        gcloud run services update tst-app \
+          --region="europe-west2" \
+          --revision-suffix="${revision_suffix}" \
+          --image="europe-west2-docker.pkg.dev/cosmic-carving-454310-j6/tst-app/tst-app:latest"
+
+
+images:
+  - 'europe-west2-docker.pkg.dev/cosmic-carving-454310-j6/tst-app/tst-app'
